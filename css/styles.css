@@ -518,10 +518,6 @@ strong {
   transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.progress-bar__fill.is-animated {
-  width: var(--fill-percent, 83%);
-}
-
 .progress-bar__remaining {
   display: flex;
   align-items: center;
