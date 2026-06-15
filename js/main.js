@@ -9,7 +9,7 @@
   });
 
   var progressFill = document.getElementById('progress-fill');
-  var progressSection = document.getElementById('progress');
+  var progressCard = document.querySelector('.progress-card');
   var toast = document.getElementById('toast');
   var toastMessage = document.getElementById('toast-message');
   var toastTimer = null;
@@ -18,19 +18,25 @@
     if (!progressFill || progressFill.classList.contains('is-animated')) return;
 
     var percent = progressFill.getAttribute('data-percent') || '83';
-    progressFill.style.setProperty('--fill-percent', percent + '%');
     progressFill.classList.add('is-animated');
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        progressFill.style.width = percent + '%';
+      });
+    });
   }
 
-  if (progressFill && progressSection) {
-    progressSection.addEventListener('aos:in', function () {
-      animateProgressBar();
-    });
+  if (progressFill) {
+    if (progressCard) {
+      progressCard.addEventListener('aos:in', animateProgressBar);
 
-    if (progressSection.classList.contains('aos-animate')) {
-      animateProgressBar();
+      if (progressCard.classList.contains('aos-animate')) {
+        animateProgressBar();
+      }
     }
 
+    var observerTarget = progressCard || progressFill;
     var observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -40,9 +46,9 @@
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
-    observer.observe(progressSection);
+    observer.observe(observerTarget);
   }
 
   function showToast(message) {
